@@ -3,9 +3,7 @@ import java.io.File;
 /**
  * Created by Alex on 26/07/2016.
  */
-public class FileUtils {
-    public FileUtils() {
-    }
+class FileUtils {
 
     public static void createShortcut(File source, File destination) {
         if (source.exists()) {

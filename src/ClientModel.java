@@ -16,7 +16,8 @@ import java.util.ArrayList;
 /**
  * Created by Alex on 26/07/2016.
  */
-public class ClientModel {
+@SuppressWarnings("UnusedReturnValue")
+class ClientModel {
 
     public final static int NO_ERR = 0;
     public final static int CFG_NOT_FOUND = -1;
@@ -25,32 +26,28 @@ public class ClientModel {
     public final static int POLICY_EXISTS = -4;
     public final static int CLIENT_NOT_EXISTS = -5;
     public final static int RENAME_FAIL = -6;
-    public final static int ERR_NOT_FOUND = 404;
     public final static int CLIENT = 0;
     public final static int BUSI = 1;
     public final static int FARM = 2;
     public final static int HAB = 3;
     public final static int LIFE = 4;
-    DocumentBuilderFactory factory;
-    DocumentBuilder builder;
-    Document doc;
-    NodeList fsNList;
-    NodeList clientFS;
-    NodeList habFS;
-    NodeList busiFS;
-    NodeList farmFS;
-    NodeList lifeFS;
-    NodeList empNList;
-    int habToggle;
-    int farmToggle;
-    int busiToggle;
-    int lifeToggle;
-    String name;
-    String employee;
+    private final static int ERR_NOT_FOUND = 404;
     ArrayList<String> employees;
-    String parentDirectory;
-    ArrayList<Object[]> data;
-    Object[] cData;
+    private DocumentBuilderFactory factory;
+    private DocumentBuilder builder;
+    private Document doc;
+    private NodeList clientFS;
+    private NodeList habFS;
+    private NodeList busiFS;
+    private NodeList farmFS;
+    private NodeList lifeFS;
+    private int habToggle;
+    private int farmToggle;
+    private int busiToggle;
+    private int lifeToggle;
+    private String parentDirectory;
+    private ArrayList<Object[]> data;
+    private Object[] cData;
     private int errMsg;
 
     public ClientModel() {
@@ -79,9 +76,9 @@ public class ClientModel {
         }
 
         doc.getDocumentElement().normalize();
-        fsNList = doc.getElementsByTagName("fileStructure").item(0)
+        NodeList fsNList = doc.getElementsByTagName("fileStructure").item(0)
                 .getChildNodes();
-        empNList = doc.getElementsByTagName("employees").item(0)
+        NodeList empNList = doc.getElementsByTagName("employees").item(0)
                 .getChildNodes();
         employees = new ArrayList<String>();
         for (int i = 0; i < empNList.getLength(); i++) { // Creating list of
@@ -121,12 +118,10 @@ public class ClientModel {
         farmToggle = -1;
         busiToggle = -1;
         lifeToggle = -1;
-        employee = "";
-        name = "";
         errMsg = 0;
     }
 
-    public static void clean(Node node) {
+    private static void clean(Node node) {
         NodeList childNodes = node.getChildNodes();
 
         for (int n = childNodes.getLength() - 1; n >= 0; n--) {
@@ -168,7 +163,7 @@ public class ClientModel {
         Element e = doc.createElement("employee");
         e.appendChild(empName);
         empNode.item(0).insertBefore(e, empNode.item(1));
-        Transformer transformer = null;
+        Transformer transformer;
         try {
             transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -234,17 +229,11 @@ public class ClientModel {
     }
 
     public void resetNewClient() {
-        employee = "";
         habToggle = -1;
         farmToggle = -1;
         busiToggle = -1;
         lifeToggle = -1;
-        name = "";
         cData = null;
-    }
-
-    public void setEmployee(String name) {
-        employee = name;
     }
 
     public void toggleHab() {
@@ -391,10 +380,10 @@ public class ClientModel {
     public int createClient() {
         File newClient;
 
-        for (int i = 0; i < employees.size(); i++) { // Checking if any client
+        for (String employee : employees) { // Checking if any client
             // exists
             newClient = new File(createURL(new Object[]{cData[0], cData[1],
-                    employees.get(i)}, CLIENT));
+                    employee}, CLIENT));
             if (newClient.exists())
                 return CLIENT_EXISTS;
         }
@@ -442,6 +431,10 @@ public class ClientModel {
         return NO_ERR;
     }
 
+    public ArrayList<String> getEmployees() {
+        return employees;
+    }
+
     public int add() {
         File newClient = new File(createURL(cData, CLIENT));
         if (!newClient.exists())
@@ -478,7 +471,7 @@ public class ClientModel {
         return RENAME_FAIL;
     }
 
-    public int addHab(File newClient) {
+    private int addHab(File newClient) {
         File newHab = new File(createURL(cData, HAB));
         if (newHab.exists())
             return POLICY_EXISTS;
@@ -494,7 +487,7 @@ public class ClientModel {
         return NO_ERR;
     }
 
-    public int addFarm(File newClient) {
+    private int addFarm(File newClient) {
         File newFarm = new File(createURL(cData, FARM));
         if (newFarm.exists())
             return POLICY_EXISTS;
@@ -510,7 +503,7 @@ public class ClientModel {
         return NO_ERR;
     }
 
-    public int addBusi(File newClient) {
+    private int addBusi(File newClient) {
         File newBusi = new File(createURL(cData, BUSI));
         if (newBusi.exists())
             return POLICY_EXISTS;
@@ -526,7 +519,7 @@ public class ClientModel {
         return NO_ERR;
     }
 
-    public int addLife(File newClient) {
+    private int addLife(File newClient) {
         File newLife = new File(createURL(cData, LIFE));
         if (newLife.exists())
             return POLICY_EXISTS;

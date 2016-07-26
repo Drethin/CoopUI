@@ -14,67 +14,51 @@ import java.util.List;
 /**
  * Created by Alex on 26/07/2016.
  */
-public class ClientView extends JFrame {
-    public static final int NEW_CLIENT = 1;
-    public static final int EDIT_CLIENT = 2;
-    public static final int NEW_EMPLOYEE = 3;
-    public static final int REMOVE_EMPLOYEE = 4;
+@SuppressWarnings("unchecked")
+class ClientView extends JFrame {
+    private static final int NEW_CLIENT = 1;
+    private static final int EDIT_CLIENT = 2;
+    private static final int NEW_EMPLOYEE = 3;
+    private static final int REMOVE_EMPLOYEE = 4;
 
-    JFrame thisFrame;
-    JLabel label;
-    JCheckBox checkBox;
-
-    JMenuBar menuBar;
-    JMenu fileMenu;
-    JMenu fileNewMenu;
-    JMenu editMenu;
-    JMenuItem menuItem;
-
-    JPanel leftPanel;
-    JSeparator separator;
-
-    EmpFilter empFilter = new EmpFilter();
-    LinkedList<Employee> empFilterList;
-    List<RowFilter<MyTableModel, Object>> filterList;
-    String[] tableColumns = {"Last Name", "First Name", "Policy Manager"};
-    ArrayList<Object[]> data;
-    JTable table;
-    JScrollPane scrollPane;
-    JButton button;
-    MyTableModel tableModel;
-    TableRowSorter<MyTableModel> sorter;
-    JTextField filterText;
-    JPanel center;
-    int row;
-
-    JDialog window;
-    JTextField lNameText;
-    JTextField fNameText;
-    JComboBox empList;
-    String cEditEmpName;
-
-    String fName;
-    String lName;
-    String emp;
-    Object[] eCData;
-    int err;
-
-    Controller controller = new Controller();
-
-    ClientModel model = new ClientModel();
+    private final JFrame thisFrame;
+    private final EmpFilter empFilter = new EmpFilter();
+    private final LinkedList<Employee> empFilterList;
+    private final String[] tableColumns = {"Last Name", "First Name", "Policy Manager"};
+    private final JTable table;
+    private final MyTableModel tableModel;
+    private final TableRowSorter<MyTableModel> sorter;
+    private final JTextField filterText;
+    private final Controller controller = new Controller();
+    private final ClientModel model = new ClientModel();
+    private JLabel label;
+    private JCheckBox checkBox;
+    private JPanel leftPanel;
+    private List<RowFilter<MyTableModel, Object>> filterList;
+    private ArrayList<Object[]> data;
+    private JButton button;
+    private int row;
+    private JDialog window;
+    private JTextField lNameText;
+    private JTextField fNameText;
+    private JComboBox empList;
+    private String fName;
+    private String lName;
+    private String emp;
+    private Object[] eCData;
 
     public ClientView() {
         showErr(model.getErr());
         setLayout(new BorderLayout());
 
         // Building Menu Bar
-        menuBar = new JMenuBar();
-        fileMenu = new JMenu("File");
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic(KeyEvent.VK_F);
-        fileNewMenu = new JMenu("New");
+        JMenu fileNewMenu = new JMenu("New");
         fileNewMenu.setMnemonic(KeyEvent.VK_N);
         fileMenu.add(fileNewMenu);
-        menuItem = new JMenuItem("Client");
+        JMenuItem menuItem = new JMenuItem("Client");
         menuItem.setMnemonic(KeyEvent.VK_C);
         menuItem.addActionListener(controller);
         menuItem.setActionCommand("newClientWindow");
@@ -90,7 +74,7 @@ public class ClientView extends JFrame {
         menuItem.setActionCommand("exit");
         fileMenu.add(menuItem);
         menuBar.add(fileMenu);
-        editMenu = new JMenu("Edit");
+        JMenu editMenu = new JMenu("Edit");
         editMenu.setMnemonic(KeyEvent.VK_E);
         menuItem = new JMenuItem("Remove Employee");
         menuItem.setMnemonic(KeyEvent.VK_E);
@@ -154,7 +138,7 @@ public class ClientView extends JFrame {
         });
         empFilterList = new LinkedList<Employee>();
         filterList = new ArrayList<RowFilter<MyTableModel, Object>>();
-        scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(table);
         JPanel tmp = new JPanel();
         tmp.setLayout(new BoxLayout(tmp, BoxLayout.LINE_AXIS));
         label = new JLabel(" Filter: ");
@@ -162,7 +146,7 @@ public class ClientView extends JFrame {
         tmp.add(label);
         tmp.add(filterText);
         // tmp.setBorder(BorderFactory.createLoweredBevelBorder());
-        center = new JPanel(new BorderLayout());
+        JPanel center = new JPanel(new BorderLayout());
         center.add(tmp, BorderLayout.SOUTH);
         center.add(scrollPane, BorderLayout.CENTER);
         add(center, BorderLayout.CENTER);
@@ -175,7 +159,7 @@ public class ClientView extends JFrame {
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
         label = new JLabel(" Policy Managers:");
         leftPanel.add(label);
-        separator = new JSeparator(SwingConstants.HORIZONTAL);
+        JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
         separator.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
         leftPanel.add(separator);
         leftPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -232,7 +216,7 @@ public class ClientView extends JFrame {
 
         fNameText = new JTextField();
         fNameText.setColumns(15);
-        empList = new JComboBox(model.employees.toArray());
+        empList = new JComboBox(model.getEmployees().toArray());
         label = new JLabel("Name: ");
 
         JButton button = new JButton();
@@ -332,7 +316,7 @@ public class ClientView extends JFrame {
                 lNameText.setText(lName);
                 lNameText.setEditable(false);
                 int found = 0;
-                cEditEmpName = emp;
+
                 if (emp == null || emp.isEmpty()) {
                     empList.setSelectedIndex(0);
                 } else {
@@ -395,7 +379,7 @@ public class ClientView extends JFrame {
     }
 
     private void newFilter() {
-        RowFilter<MyTableModel, Object> rf = null;
+        RowFilter<MyTableModel, Object> rf;
         // If current expression doesn't parse, don't update.
         try {
             rf = RowFilter.regexFilter("(?i)" + filterText.getText() + "(?-i)");
@@ -412,7 +396,7 @@ public class ClientView extends JFrame {
     }
 
     private int showErr(int err) {
-        this.err = err;
+
         switch (err) {
             case ClientModel.NO_ERR:
                 break;
@@ -485,8 +469,8 @@ public class ClientView extends JFrame {
     }
 
     private class Employee {
-        String empName;
-        RowFilter<MyTableModel, Object> filter;
+        final String empName;
+        final RowFilter<MyTableModel, Object> filter;
 
         public Employee(String name, RowFilter<MyTableModel, Object> rf) {
             empName = name;
@@ -520,8 +504,8 @@ public class ClientView extends JFrame {
                 }
             }
             filterList = new ArrayList<RowFilter<MyTableModel, Object>>();
-            for (int i = 0; i < empFilterList.size(); i++) {
-                filterList.add(empFilterList.get(i).getFilter());
+            for (Employee anEmpFilterList : empFilterList) {
+                filterList.add(anEmpFilterList.getFilter());
             }
             newFilter();
         }
@@ -587,7 +571,6 @@ public class ClientView extends JFrame {
             }
             if (e.getActionCommand().equals("removeEmployee")) {
                 model.removeEmployee((String) empList.getSelectedItem());
-                // TODO EMPLOYEE REMOVAL
                 thisFrame.remove(leftPanel);
                 leftPanel = buildLeftPanel();
                 thisFrame.add(leftPanel, BorderLayout.WEST);
