@@ -31,9 +31,6 @@ public class ClientModel {
     public final static int FARM = 2;
     public final static int HAB = 3;
     public final static int LIFE = 4;
-
-    private int errMsg;
-
     DocumentBuilderFactory factory;
     DocumentBuilder builder;
     Document doc;
@@ -54,6 +51,7 @@ public class ClientModel {
     String parentDirectory;
     ArrayList<Object[]> data;
     Object[] cData;
+    private int errMsg;
 
     public ClientModel() {
         File configFile = new File("config.xml");
@@ -128,7 +126,27 @@ public class ClientModel {
         errMsg = 0;
     }
 
-    public int addEmployee(String employee){
+    public static void clean(Node node) {
+        NodeList childNodes = node.getChildNodes();
+
+        for (int n = childNodes.getLength() - 1; n >= 0; n--) {
+            Node child = childNodes.item(n);
+            short nodeType = child.getNodeType();
+
+            if (nodeType == Node.ELEMENT_NODE)
+                clean(child);
+            else if (nodeType == Node.TEXT_NODE) {
+                String trimmedNodeVal = child.getNodeValue().trim();
+                if (trimmedNodeVal.length() == 0)
+                    node.removeChild(child);
+                else
+                    child.setNodeValue(trimmedNodeVal);
+            } else if (nodeType == Node.COMMENT_NODE)
+                node.removeChild(child);
+        }
+    }
+
+    public int addEmployee(String employee) {
         File configFile = new File("config.xml");
         if (!configFile.exists()) {
             return CFG_NOT_FOUND;
@@ -167,10 +185,11 @@ public class ClientModel {
             return ERR_NOT_FOUND;
         }
     }
-    public int removeEmployee(String employee){
 
-        for(int i = 0; i < employees.size(); i++){
-            if(employees.get(i).equals(employee)) employees.remove(i);
+    public int removeEmployee(String employee) {
+
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).equals(employee)) employees.remove(i);
         }
         //return NO_ERR;
         File configFile = new File("config.xml");
@@ -190,9 +209,9 @@ public class ClientModel {
         }
         doc.getDocumentElement().normalize();
         NodeList empNode = doc.getElementsByTagName("employees");
-        for(int i = 0; i < empNode.item(0).getChildNodes().getLength(); i++){
+        for (int i = 0; i < empNode.item(0).getChildNodes().getLength(); i++) {
             Node tmpNode = empNode.item(0).getChildNodes().item(i);
-            if(tmpNode.getTextContent().equals(employee)){
+            if (tmpNode.getTextContent().equals(employee)) {
                 empNode.item(0).removeChild(empNode.item(0).getChildNodes().item(i));
             }
         }
@@ -211,29 +230,6 @@ public class ClientModel {
             return ERR_NOT_FOUND;
         } catch (TransformerException e1) {
             return ERR_NOT_FOUND;
-        }
-    }
-    public static void clean(Node node)
-    {
-        NodeList childNodes = node.getChildNodes();
-
-        for (int n = childNodes.getLength() - 1; n >= 0; n--)
-        {
-            Node child = childNodes.item(n);
-            short nodeType = child.getNodeType();
-
-            if (nodeType == Node.ELEMENT_NODE)
-                clean(child);
-            else if (nodeType == Node.TEXT_NODE)
-            {
-                String trimmedNodeVal = child.getNodeValue().trim();
-                if (trimmedNodeVal.length() == 0)
-                    node.removeChild(child);
-                else
-                    child.setNodeValue(trimmedNodeVal);
-            }
-            else if (nodeType == Node.COMMENT_NODE)
-                node.removeChild(child);
         }
     }
 
@@ -397,17 +393,17 @@ public class ClientModel {
 
         for (int i = 0; i < employees.size(); i++) { // Checking if any client
             // exists
-            newClient = new File(createURL(new Object[] { cData[0], cData[1],
-                    employees.get(i) }, CLIENT));
+            newClient = new File(createURL(new Object[]{cData[0], cData[1],
+                    employees.get(i)}, CLIENT));
             if (newClient.exists())
                 return CLIENT_EXISTS;
         }
         newClient = new File(createURL(
-                new Object[] { cData[0], cData[1], null }, CLIENT));
+                new Object[]{cData[0], cData[1], null}, CLIENT));
         if (newClient.exists())
             return CLIENT_EXISTS;
-        newClient = new File(createURL(new Object[] { cData[0], cData[1],
-                "Dead" }, CLIENT));
+        newClient = new File(createURL(new Object[]{cData[0], cData[1],
+                "Dead"}, CLIENT));
         if (newClient.exists())
             return CLIENT_EXISTS;
         newClient = new File(createURL(cData, CLIENT));
@@ -476,8 +472,8 @@ public class ClientModel {
 
     public int changeEmp(String name) {
         File editClient = new File(createURL(cData, CLIENT));
-        if (editClient.renameTo(new File(createURL(new Object[] { cData[0],
-                cData[1], name }, CLIENT))))
+        if (editClient.renameTo(new File(createURL(new Object[]{cData[0],
+                cData[1], name}, CLIENT))))
             return 0;
         return RENAME_FAIL;
     }

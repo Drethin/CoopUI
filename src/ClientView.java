@@ -36,7 +36,7 @@ public class ClientView extends JFrame {
     EmpFilter empFilter = new EmpFilter();
     LinkedList<Employee> empFilterList;
     List<RowFilter<MyTableModel, Object>> filterList;
-    String[] tableColumns = { "Last Name", "First Name", "Policy Manager" };
+    String[] tableColumns = {"Last Name", "First Name", "Policy Manager"};
     ArrayList<Object[]> data;
     JTable table;
     JScrollPane scrollPane;
@@ -120,8 +120,8 @@ public class ClientView extends JFrame {
                     JPopupMenu pMenu = createPopUp();
                     pMenu.show(table, m.getX(), m.getY());
                 } else if (m.getClickCount() == 2) {
-                    String url = model.createURL(new Object[] { lName, fName,
-                            emp }, ClientModel.CLIENT);
+                    String url = model.createURL(new Object[]{lName, fName,
+                            emp}, ClientModel.CLIENT);
                     try {
                         Runtime.getRuntime().exec(
                                 "explorer.exe \"" + url + "\"");
@@ -170,7 +170,7 @@ public class ClientView extends JFrame {
         thisFrame = this;
     }
 
-    private JPanel buildLeftPanel(){
+    private JPanel buildLeftPanel() {
         leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
         label = new JLabel(" Policy Managers:");
@@ -206,47 +206,6 @@ public class ClientView extends JFrame {
         return leftPanel;
     }
 
-    private class MyTableModel extends AbstractTableModel {
-        @Override
-        public int getColumnCount() {
-            return tableColumns.length;
-        }
-
-        public String getColumnName(int col) {
-            return tableColumns[col];
-        }
-
-        @Override
-        public int getRowCount() {
-            return data.size();
-        }
-
-        @Override
-        public Object getValueAt(int row, int col) {
-
-            return data.get(row)[col];
-        }
-
-        @Override
-        public boolean isCellEditable(int row, int col) {
-            return false;
-        }
-
-        @Override
-        public void setValueAt(Object value, int row, int col) {
-            Object[] tmp = data.get(row);
-            tmp[col] = value;
-            data.set(row, tmp);
-            fireTableCellUpdated(row, col);
-        }
-
-        public void addRow(Object[] row) {
-            data.add(row);
-            fireTableDataChanged();
-        }
-
-    }
-
     private void setValues(int row) {
         lName = (String) table.getValueAt(row, 0);
         fName = (String) table.getValueAt(row, 1);
@@ -262,8 +221,7 @@ public class ClientView extends JFrame {
         return pMenu;
     }
 
-
-    private JDialog createEmployeeWindow(int type){
+    private JDialog createEmployeeWindow(int type) {
         window = new JDialog(this, "Default");
         window.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         window.setSize(200, 80);
@@ -284,7 +242,7 @@ public class ClientView extends JFrame {
         JPanel panel = new JPanel();
         panel.add(label);
 
-        switch(type){
+        switch (type) {
             case NEW_EMPLOYEE:
                 window.setTitle("Create Employee");
                 button.setText("Create");
@@ -365,7 +323,7 @@ public class ClientView extends JFrame {
                 break;
             case EDIT_CLIENT:
 
-                eCData = new Object[] { lName, fName, emp };
+                eCData = new Object[]{lName, fName, emp};
                 window = new JDialog(this, "Edit Client");
                 button = new JButton("Edit");
                 button.setActionCommand("editClient");
@@ -391,7 +349,7 @@ public class ClientView extends JFrame {
                 checkBox = new JCheckBox("Commercial");
                 checkBox.addActionListener(controller);
                 checkBox.setActionCommand("commercial");
-                if (new File(model.createURL(eCData, ClientModel.BUSI)).exists()){
+                if (new File(model.createURL(eCData, ClientModel.BUSI)).exists()) {
                     checkBox.setSelected(true);
                     checkBox.setEnabled(false);
                 }
@@ -399,7 +357,7 @@ public class ClientView extends JFrame {
                 checkBox = new JCheckBox("Farm");
                 checkBox.addActionListener(controller);
                 checkBox.setActionCommand("farm");
-                if (new File(model.createURL(eCData, ClientModel.FARM)).exists()){
+                if (new File(model.createURL(eCData, ClientModel.FARM)).exists()) {
                     checkBox.setSelected(true);
                     checkBox.setEnabled(false);
                 }
@@ -407,7 +365,7 @@ public class ClientView extends JFrame {
                 checkBox = new JCheckBox("Hab");
                 checkBox.addActionListener(controller);
                 checkBox.setActionCommand("hab");
-                if (new File(model.createURL(eCData, ClientModel.HAB)).exists()){
+                if (new File(model.createURL(eCData, ClientModel.HAB)).exists()) {
                     checkBox.setSelected(true);
                     checkBox.setEnabled(false);
                 }
@@ -415,7 +373,7 @@ public class ClientView extends JFrame {
                 checkBox = new JCheckBox("Life");
                 checkBox.addActionListener(controller);
                 checkBox.setActionCommand("life");
-                if (new File(model.createURL(eCData, ClientModel.LIFE)).exists()){
+                if (new File(model.createURL(eCData, ClientModel.LIFE)).exists()) {
                     checkBox.setSelected(true);
                     checkBox.setEnabled(false);
                 }
@@ -451,6 +409,79 @@ public class ClientView extends JFrame {
             sorter.setRowFilter(rf);
         else
             sorter.setRowFilter(RowFilter.andFilter(tmp));
+    }
+
+    private int showErr(int err) {
+        this.err = err;
+        switch (err) {
+            case ClientModel.NO_ERR:
+                break;
+            case ClientModel.CFG_NOT_FOUND:
+                JOptionPane.showMessageDialog(this, "config.xml not found!");
+                System.exit(0);
+            case ClientModel.CLIENT_EXISTS:
+                JOptionPane.showMessageDialog(this, "Client Already Exists!");
+                break;
+            case ClientModel.CLIENT_NOT_EXISTS:
+                JOptionPane.showMessageDialog(this, "Client Does Not Exist!");
+                break;
+            case ClientModel.INVALID_CFG:
+                JOptionPane.showMessageDialog(this,
+                        "Something is wrong with config.xml!");
+                System.exit(0);
+            case ClientModel.POLICY_EXISTS:
+                JOptionPane.showMessageDialog(this,
+                        "Policy Already Exists For Client!");
+                break;
+            case ClientModel.RENAME_FAIL:
+                JOptionPane.showMessageDialog(this, "Could Not Rename Client!");
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Unknown Error!");
+                break;
+        }
+        return err;
+    }
+
+    private class MyTableModel extends AbstractTableModel {
+        @Override
+        public int getColumnCount() {
+            return tableColumns.length;
+        }
+
+        public String getColumnName(int col) {
+            return tableColumns[col];
+        }
+
+        @Override
+        public int getRowCount() {
+            return data.size();
+        }
+
+        @Override
+        public Object getValueAt(int row, int col) {
+
+            return data.get(row)[col];
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int col) {
+            return false;
+        }
+
+        @Override
+        public void setValueAt(Object value, int row, int col) {
+            Object[] tmp = data.get(row);
+            tmp[col] = value;
+            data.set(row, tmp);
+            fireTableCellUpdated(row, col);
+        }
+
+        public void addRow(Object[] row) {
+            data.add(row);
+            fireTableDataChanged();
+        }
+
     }
 
     private class Employee {
@@ -496,38 +527,6 @@ public class ClientView extends JFrame {
         }
     }
 
-    private int showErr(int err) {
-        this.err = err;
-        switch (err) {
-            case ClientModel.NO_ERR:
-                break;
-            case ClientModel.CFG_NOT_FOUND:
-                JOptionPane.showMessageDialog(this, "config.xml not found!");
-                System.exit(0);
-            case ClientModel.CLIENT_EXISTS:
-                JOptionPane.showMessageDialog(this, "Client Already Exists!");
-                break;
-            case ClientModel.CLIENT_NOT_EXISTS:
-                JOptionPane.showMessageDialog(this, "Client Does Not Exist!");
-                break;
-            case ClientModel.INVALID_CFG:
-                JOptionPane.showMessageDialog(this,
-                        "Something is wrong with config.xml!");
-                System.exit(0);
-            case ClientModel.POLICY_EXISTS:
-                JOptionPane.showMessageDialog(this,
-                        "Policy Already Exists For Client!");
-                break;
-            case ClientModel.RENAME_FAIL:
-                JOptionPane.showMessageDialog(this, "Could Not Rename Client!");
-                break;
-            default:
-                JOptionPane.showMessageDialog(this, "Unknown Error!");
-                break;
-        }
-        return err;
-    }
-
     private class Controller implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -544,12 +543,12 @@ public class ClientView extends JFrame {
                 window.setLocationRelativeTo(null);
                 window.setVisible(true);
             }
-            if(e.getActionCommand().equals("newEmpWindow")){
+            if (e.getActionCommand().equals("newEmpWindow")) {
                 JDialog window = createEmployeeWindow(NEW_EMPLOYEE);
                 window.setLocationRelativeTo(null);
                 window.setVisible(true);
             }
-            if(e.getActionCommand().equals("removeEmpWindow")){
+            if (e.getActionCommand().equals("removeEmpWindow")) {
                 JDialog window = createEmployeeWindow(REMOVE_EMPLOYEE);
                 window.setLocationRelativeTo(null);
                 window.setVisible(true);
@@ -567,7 +566,7 @@ public class ClientView extends JFrame {
                 model.toggleBusi();
             if (e.getActionCommand().equals("life"))
                 model.toggleLife();
-            if(e.getActionCommand().equals("createEmployee")){
+            if (e.getActionCommand().equals("createEmployee")) {
                 if (fNameText.getText().contains("_") || fNameText.getText().contains(",")) {
                     JOptionPane.showMessageDialog(window,
                             "Invalid Name!\nPlease don't use _ or ,");
@@ -586,7 +585,7 @@ public class ClientView extends JFrame {
                 thisFrame.repaint();
                 window.dispose();
             }
-            if(e.getActionCommand().equals("removeEmployee")){
+            if (e.getActionCommand().equals("removeEmployee")) {
                 model.removeEmployee((String) empList.getSelectedItem());
                 // TODO EMPLOYEE REMOVAL
                 thisFrame.remove(leftPanel);
@@ -645,12 +644,12 @@ public class ClientView extends JFrame {
                 if (emp.equals("None"))
                     emp = "";
 
-                model.setCData(new Object[] { lName, fName, emp });
+                model.setCData(new Object[]{lName, fName, emp});
 
                 if (showErr(model.createClient()) == 0) {
                     fName = fNameText.getText();
                     lName = lNameText.getText();
-                    tableModel.addRow(new Object[] { lName, fName, emp });
+                    tableModel.addRow(new Object[]{lName, fName, emp});
                     model.resetNewClient();
                     window.dispose();
                 }
