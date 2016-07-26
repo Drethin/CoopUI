@@ -47,7 +47,7 @@ class ClientView extends JFrame {
     private String emp;
     private Object[] eCData;
 
-    public ClientView() {
+    ClientView() {
         showErr(model.getErr());
         setLayout(new BorderLayout());
 
@@ -461,7 +461,7 @@ class ClientView extends JFrame {
             fireTableCellUpdated(row, col);
         }
 
-        public void addRow(Object[] row) {
+        void addRow(Object[] row) {
             data.add(row);
             fireTableDataChanged();
         }
@@ -472,16 +472,16 @@ class ClientView extends JFrame {
         final String empName;
         final RowFilter<MyTableModel, Object> filter;
 
-        public Employee(String name, RowFilter<MyTableModel, Object> rf) {
+        private Employee(String name, RowFilter<MyTableModel, Object> rf) {
             empName = name;
             filter = rf;
         }
 
-        public String getName() {
+        String getName() {
             return empName;
         }
 
-        public RowFilter<MyTableModel, Object> getFilter() {
+        RowFilter<MyTableModel, Object> getFilter() {
             return filter;
         }
     }

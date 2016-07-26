@@ -5,7 +5,7 @@ import java.io.File;
  */
 class FileUtils {
 
-    public static void createShortcut(File source, File destination) {
+    static void createShortcut(File source, File destination) {
         if (source.exists()) {
             try {
                 File tmp = File.createTempFile("tmpfile", ".bat");

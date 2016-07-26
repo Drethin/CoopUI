@@ -19,18 +19,18 @@ import java.util.ArrayList;
 @SuppressWarnings("UnusedReturnValue")
 class ClientModel {
 
-    public final static int NO_ERR = 0;
-    public final static int CFG_NOT_FOUND = -1;
-    public final static int INVALID_CFG = -2;
-    public final static int CLIENT_EXISTS = -3;
-    public final static int POLICY_EXISTS = -4;
-    public final static int CLIENT_NOT_EXISTS = -5;
-    public final static int RENAME_FAIL = -6;
-    public final static int CLIENT = 0;
-    public final static int BUSI = 1;
-    public final static int FARM = 2;
-    public final static int HAB = 3;
-    public final static int LIFE = 4;
+    final static int NO_ERR = 0;
+    final static int CFG_NOT_FOUND = -1;
+    final static int INVALID_CFG = -2;
+    final static int CLIENT_EXISTS = -3;
+    final static int POLICY_EXISTS = -4;
+    final static int CLIENT_NOT_EXISTS = -5;
+    final static int RENAME_FAIL = -6;
+    final static int CLIENT = 0;
+    final static int BUSI = 1;
+    final static int FARM = 2;
+    final static int HAB = 3;
+    final static int LIFE = 4;
     private final static int ERR_NOT_FOUND = 404;
     ArrayList<String> employees;
     private DocumentBuilderFactory factory;
@@ -50,7 +50,7 @@ class ClientModel {
     private Object[] cData;
     private int errMsg;
 
-    public ClientModel() {
+    ClientModel() {
         File configFile = new File("config.xml");
         if (!configFile.exists()) {
             errMsg = CFG_NOT_FOUND;
@@ -141,7 +141,7 @@ class ClientModel {
         }
     }
 
-    public int addEmployee(String employee) {
+    int addEmployee(String employee) {
         File configFile = new File("config.xml");
         if (!configFile.exists()) {
             return CFG_NOT_FOUND;
@@ -181,7 +181,7 @@ class ClientModel {
         }
     }
 
-    public int removeEmployee(String employee) {
+    int removeEmployee(String employee) {
 
         for (int i = 0; i < employees.size(); i++) {
             if (employees.get(i).equals(employee)) employees.remove(i);
@@ -211,7 +211,7 @@ class ClientModel {
             }
         }
         clean(doc.getFirstChild());
-        Transformer transformer = null;
+        Transformer transformer;
         try {
             transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -228,7 +228,7 @@ class ClientModel {
         }
     }
 
-    public void resetNewClient() {
+    void resetNewClient() {
         habToggle = -1;
         farmToggle = -1;
         busiToggle = -1;
@@ -236,38 +236,38 @@ class ClientModel {
         cData = null;
     }
 
-    public void toggleHab() {
+    void toggleHab() {
         habToggle *= -1;
     }
 
-    public void toggleFarm() {
+    void toggleFarm() {
         farmToggle *= -1;
     }
 
-    public void toggleBusi() {
+    void toggleBusi() {
         busiToggle *= -1;
     }
 
-    public void toggleLife() {
+    void toggleLife() {
         lifeToggle *= -1;
     }
 
     /*
      * public int setName(String name) { this.name = name; return 1; }
      */
-    public void setCData(Object[] c) {
+    void setCData(Object[] c) {
         cData = c;
     }
 
-    public ArrayList<Object[]> getData() {
+    ArrayList<Object[]> getData() {
         return data;
     }
 
-    public int getErr() {
+    int getErr() {
         return errMsg;
     }
 
-    public String createURL(Object[] row, int type) {
+    String createURL(Object[] row, int type) {
         String folderName = "";
         String empl = null;
         switch (type) {
@@ -315,7 +315,7 @@ class ClientModel {
         }
     }
 
-    public int fetchClientData() { // Getting client list to populate data array
+    int fetchClientData() { // Getting client list to populate data array
         int numClients;
         String fName;
         String lName;
@@ -377,7 +377,7 @@ class ClientModel {
         return NO_ERR;
     }
 
-    public int createClient() {
+    int createClient() {
         File newClient;
 
         for (String employee : employees) { // Checking if any client
@@ -431,11 +431,11 @@ class ClientModel {
         return NO_ERR;
     }
 
-    public ArrayList<String> getEmployees() {
+    ArrayList<String> getEmployees() {
         return employees;
     }
 
-    public int add() {
+    int add() {
         File newClient = new File(createURL(cData, CLIENT));
         if (!newClient.exists())
             return CLIENT_NOT_EXISTS;
@@ -463,7 +463,7 @@ class ClientModel {
         return NO_ERR;
     }
 
-    public int changeEmp(String name) {
+    int changeEmp(String name) {
         File editClient = new File(createURL(cData, CLIENT));
         if (editClient.renameTo(new File(createURL(new Object[]{cData[0],
                 cData[1], name}, CLIENT))))
