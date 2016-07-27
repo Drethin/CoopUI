@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <config>
-<fileStructure>
-<dir name="CLIENT FILES">
-<dir>MISC</dir>
-<dir>PHOTOS</dir>
-<dir>RECIEPT</dir>
-</dir>
-<dir name="COMMERCIAL FILES">
-<dir>Application</dir>
-<dir>Certified Copies</dir>
-<dir>Emails</dir>
-<dir>Endorsments</dir>
-<dir>Misc</dir>
-<dir>Photos</dir>
-<dir>Policy</dir>
-<dir>Reciept</dir>
-</dir>
-<dir name="FARM FILES">
-<dir>Application</dir>
-<dir>Certified Copies</dir>
-<dir>Emails</dir>
-<dir>Endorsments</dir>
-<dir>Misc</dir>
-<dir>Photos</dir>
-<dir>Policy</dir>
-<dir>Reciept</dir>
-<dir>Machinery List</dir>
-<dir>Schedualed Articles</dir>
-</dir>
-<dir name="HABITATIONAL FILES">
-<dir>Application</dir>
-<dir>Certified Copies</dir>
-<dir>Emails</dir>
-<dir>Endorsments</dir>
-<dir>Misc</dir>
-<dir>Photos</dir>
-<dir>Policy</dir>
-<dir>Reciept</dir>
-</dir>
-<dir name="LIFE FILES">
-    <dir>Application</dir>
-    <dir>Certified Copies</dir>
-    <dir>Emails</dir>
-    <dir>Endorsments</dir>
-    <dir>Misc</dir>
-    <dir>Photos</dir>
-    <dir>Policy</dir>
-    <dir>Reciept</dir>
-</dir>
-</fileStructure>
-<employees>
-<employee>Amanda</employee>
-<employee>Carly</employee>
-<employee>Cathy</employee>
-<employee>Paulina</employee>
-<employee>Tracey</employee>
-</employees>
+    <fileStructure>
+        <dir name="CLIENT FILES">
+            <dir>MISC</dir>
+            <dir>PHOTOS</dir>
+            <dir>RECIEPT</dir>
+        </dir>
+        <dir name="COMMERCIAL FILES">
+            <dir>Application</dir>
+            <dir>Certified Copies</dir>
+            <dir>Emails</dir>
+            <dir>Endorsments</dir>
+            <dir>Misc</dir>
+            <dir>Photos</dir>
+            <dir>Policy</dir>
+            <dir>Reciept</dir>
+        </dir>
+        <dir name="FARM FILES">
+            <dir>Application</dir>
+            <dir>Certified Copies</dir>
+            <dir>Emails</dir>
+            <dir>Endorsments</dir>
+            <dir>Misc</dir>
+            <dir>Photos</dir>
+            <dir>Policy</dir>
+            <dir>Reciept</dir>
+            <dir>Machinery List</dir>
+            <dir>Schedualed Articles</dir>
+        </dir>
+        <dir name="HABITATIONAL FILES">
+            <dir>Application</dir>
+            <dir>Certified Copies</dir>
+            <dir>Emails</dir>
+            <dir>Endorsments</dir>
+            <dir>Misc</dir>
+            <dir>Photos</dir>
+            <dir>Policy</dir>
+            <dir>Reciept</dir>
+        </dir>
+        <dir name="LIFE FILES">
+            <dir>Application</dir>
+            <dir>Certified Copies</dir>
+            <dir>Emails</dir>
+            <dir>Endorsments</dir>
+            <dir>Misc</dir>
+            <dir>Photos</dir>
+            <dir>Policy</dir>
+            <dir>Reciept</dir>
+        </dir>
+    </fileStructure>
+    <employees>
+        <employee>Amanda</employee>
+        <employee>Carly</employee>
+        <employee>Cathy</employee>
+        <employee>Paulina</employee>
+        <employee>Tracey</employee>
+    </employees>
 </config>
