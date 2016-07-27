@@ -3,7 +3,6 @@ import java.awt.*;
 
 /**
  * Created by Alex on 26/07/2016.
- * TEST
  */
 class Client {
     public static void main(String args[]) {

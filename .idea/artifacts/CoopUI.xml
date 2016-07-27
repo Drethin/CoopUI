@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact name="CoopUI">
+    <output-path>$PROJECT_DIR$/out/artifacts</output-path>
+    <root id="root">
+      <element id="archive" name="CoopUI.zip">
+        <element id="archive" name="CoopUI.jar">
+          <element id="module-output" name="CoopUI" />
+          <element id="directory" name="META-INF">
+            <element id="file-copy" path="$PROJECT_DIR$/out/META-INF/MANIFEST.MF" />
+          </element>
+        </element>
+        <element id="file-copy" path="$PROJECT_DIR$/config.xml" />
+      </element>
+    </root>
+  </artifact>
+</component>
