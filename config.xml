@@ -39,7 +39,14 @@
 <dir>Reciept</dir>
 </dir>
 <dir name="LIFE FILES">
-<dir>Misc</dir>
+    <dir>Application</dir>
+    <dir>Certified Copies</dir>
+    <dir>Emails</dir>
+    <dir>Endorsments</dir>
+    <dir>Misc</dir>
+    <dir>Photos</dir>
+    <dir>Policy</dir>
+    <dir>Reciept</dir>
 </dir>
 </fileStructure>
 <employees>
