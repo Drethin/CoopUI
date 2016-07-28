@@ -16,7 +16,6 @@ import java.util.ArrayList;
 /**
  * Created by Alex on 26/07/2016.
  */
-@SuppressWarnings("UnusedReturnValue")
 class ClientModel {
 
     final static int NO_ERR = 0;
@@ -316,20 +315,17 @@ class ClientModel {
     }
 
     int fetchClientData() { // Getting client list to populate data array
-        int numClients;
         String fName;
         String lName;
         String employee;
         String line;
-
+        BufferedReader stdout;
+        String command = "powershell.exe ls '../CLIENT FILE' -directory | ls -name -directory";
         try {
-            data = new ArrayList<Object[]>(2000);
-            String command = "powershell.exe ls '../CLIENT FILE' -directory | ls -name -directory";
-            Process psProcess = Runtime.getRuntime().exec(command); // Getting client
-            // list
+            Process psProcess = Runtime.getRuntime().exec(command); // Getting client list
             psProcess.getOutputStream().close();
-            BufferedReader stdout = new BufferedReader(new InputStreamReader(
-                    psProcess.getInputStream()));
+            data = new ArrayList<Object[]>(2000);
+            stdout = new BufferedReader(new InputStreamReader(psProcess.getInputStream()));
             while((line = stdout.readLine())!= null) {
                 if (line.matches("[a-zA-Z0-9]+(, [^_]+)?(_\\w+)?")) {
                     if (!line.contains("_")) employee = null;
@@ -343,11 +339,7 @@ class ClientModel {
                         if (employee != null) fName = line.substring(line.indexOf(",") + 2, line.lastIndexOf("_"));
                         else fName = line.substring(line.indexOf(",") + 2);
                     }
-                    Object[] tmpData = new Object[3];
-                    tmpData[0] = lName;
-                    tmpData[1] = fName;
-                    tmpData[2] = employee;
-                    data.add(tmpData);
+                    data.add(new Object[]{lName,fName,employee});
                 }
             }
             stdout.close();
