@@ -320,26 +320,15 @@ class ClientModel {
         String fName;
         String lName;
         String employee;
-        String command = "powershell (ls '../CLIENT FILE' -directory | ls -name -directory | measure).Count";
+        String line;
 
         try {
-            Process psProcess = Runtime.getRuntime().exec(command); // Getting
-            // number of
-            // clients
-            psProcess.getOutputStream().close();
-            String line;
-            BufferedReader stdout = new BufferedReader(new InputStreamReader(
-                    psProcess.getInputStream()));
-            line = stdout.readLine();
-            numClients = Integer.parseInt(line);
-            stdout.close();
-            data = new ArrayList<Object[]>(numClients);
-
-            command = "powershell.exe ls '../CLIENT FILE' -directory | ls -name -directory";
-            psProcess = Runtime.getRuntime().exec(command); // Getting client
+            data = new ArrayList<Object[]>(2000);
+            String command = "powershell.exe ls '../CLIENT FILE' -directory | ls -name -directory";
+            Process psProcess = Runtime.getRuntime().exec(command); // Getting client
             // list
             psProcess.getOutputStream().close();
-            stdout = new BufferedReader(new InputStreamReader(
+            BufferedReader stdout = new BufferedReader(new InputStreamReader(
                     psProcess.getInputStream()));
             while((line = stdout.readLine())!= null) {
                 if (line.matches("[a-zA-Z0-9]+(, [^_]+)?(_\\w+)?")) {
