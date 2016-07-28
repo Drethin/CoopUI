@@ -341,32 +341,25 @@ class ClientModel {
             psProcess.getOutputStream().close();
             stdout = new BufferedReader(new InputStreamReader(
                     psProcess.getInputStream()));
-            for (int i = 0; i < numClients; i++) {
-                line = stdout.readLine();
-                if (!line.contains("_")) {
-                    employee = null;
-                } else {
-                    employee = (line.substring(line.lastIndexOf("_") + 1));
+            while((line = stdout.readLine())!= null) {
+                if (line.matches("[a-zA-Z0-9]+(, [^_]+)?(_\\w+)?")) {
+                    if (!line.contains("_")) employee = null;
+                    else employee = (line.substring(line.lastIndexOf("_") + 1));
+                    if (!line.contains(",")) {
+                        fName = null;
+                        if (employee != null) lName = line.substring(0, line.lastIndexOf("_"));
+                        else lName = line;
+                    } else {
+                        lName = line.substring(0, line.indexOf(","));
+                        if (employee != null) fName = line.substring(line.indexOf(",") + 2, line.lastIndexOf("_"));
+                        else fName = line.substring(line.indexOf(",") + 2);
+                    }
+                    Object[] tmpData = new Object[3];
+                    tmpData[0] = lName;
+                    tmpData[1] = fName;
+                    tmpData[2] = employee;
+                    data.add(tmpData);
                 }
-                if (!line.contains(",")) {
-                    fName = null;
-                    if (employee != null)
-                        lName = line.substring(0, line.lastIndexOf("_"));
-                    else
-                        lName = line;
-                } else {
-                    lName = line.substring(0, line.indexOf(","));
-                    if (employee != null)
-                        fName = line.substring(line.indexOf(",") + 2,
-                                line.lastIndexOf("_"));
-                    else
-                        fName = line.substring(line.indexOf(",") + 2);
-                }
-                Object[] tmpData = new Object[3];
-                tmpData[0] = lName;
-                tmpData[1] = fName;
-                tmpData[2] = employee;
-                data.add(i, tmpData);
             }
             stdout.close();
         } catch (NumberFormatException e) {
